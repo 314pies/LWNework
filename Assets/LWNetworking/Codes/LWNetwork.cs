@@ -30,6 +30,7 @@ namespace LWNetworking
             System.Buffer.BlockCopy(_playerID, 0, PackedData, 0, _playerID.Length);
             PackedData[4] = _viewID; PackedData[5] = _functionID;
             System.Buffer.BlockCopy(paramsPack, 0, PackedData, 6, paramsPack.Length);
+           // MonoBehaviour.print(PackedData.Length);
         }
 
         static private byte[] ParamsToByteArray(object[] _params)
@@ -58,6 +59,9 @@ namespace LWNetworking
                     _convertedPar = new byte[_newStr.Length + 4];
                     System.Buffer.BlockCopy(_newStrLegnth, 0, _convertedPar, 0, _newStrLegnth.Length);
                     System.Buffer.BlockCopy(_newStr, 0, _convertedPar, 4, _newStr.Length);
+                }else
+                {
+                    Debug.LogError(_obj.GetType()+ " is not a support type.");
                 }
                 System.Buffer.BlockCopy(_convertedPar, 0, FinalArray, Legnth, _convertedPar.Length);
                 Legnth += _convertedPar.Length;
