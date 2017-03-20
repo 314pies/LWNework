@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Collections;
 
 
-public class Test : MonoBehaviour
+public class TestOld : MonoBehaviour
 {
     // Use this for initialization
     void Start()
@@ -16,7 +16,7 @@ public class Test : MonoBehaviour
                 if (attribute.ToString() == "LWRPC")
                 {
                     print(info.Name);
-                    object[] _Par =new object[2];
+                    object[] _Par = new object[2];
                     _Par[0] = 10;
                     _Par[1] = "AAA";
 
@@ -24,12 +24,12 @@ public class Test : MonoBehaviour
                     foreach (ParameterInfo parameter in info.GetParameters())
                     {
                         print(parameter.ParameterType);
-                        if(parameter.ParameterType == typeof(int))
+                        if (parameter.ParameterType == typeof(int))
                         {
                             Debug.Log("It's an int");
                         }
                     }
-                    //info.Invoke(this,null);
+                    info.Invoke(this, null);
                     //print("ACC: " + info.GetParameters());
                     //info.GetParameters();
                 }
@@ -42,9 +42,9 @@ public class Test : MonoBehaviour
 
 
     [LWRPC]
-    public void AnotherAAA(int c,string x)
+    public void AnotherAAA(int c, string x)
     {
-        Debug.Log("A____w____A" +c );
+        Debug.Log("A____w____A" + c);
         Debug.Log(x);
     }
 }
