@@ -16,7 +16,7 @@ namespace LWNetworking
         /// </summary>
         public void RPC(bool _IsReliable, byte _functionid, params object[] _params)
         {
-            LWNetwork.SendRPC(_IsReliable,ViewID, _functionid, ref _params);
+            LWNetwork.SendRPC(_IsReliable,ViewID, _functionid, _params);
         }
     }
 }

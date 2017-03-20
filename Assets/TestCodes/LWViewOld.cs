@@ -3,7 +3,7 @@ using System.Reflection;
 using System;
 
 
-public class LWView : MonoBehaviour {
+public class LWViewOld : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
