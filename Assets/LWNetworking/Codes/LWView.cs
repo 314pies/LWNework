@@ -6,11 +6,11 @@ using System.Collections.Generic;
 
 namespace LWNetworking
 {
-    public class MethodSortComparer : IComparer
+    public class MethodSortComparer : IComparer<MethodPack>
     {
-        int Compare(object x, object y)
+        public int Compare(MethodPack x, MethodPack y)
         {
-            return 1;
+            return String.Compare(x.method.Name, y.method.Name);
         }
     }
 
@@ -52,7 +52,8 @@ namespace LWNetworking
                     }
                 }
             }
-            _methodList.Sort();
+            MethodSortComparer comparer = new MethodSortComparer();
+            _methodList.Sort(comparer);
             return _methodList;
         }
 
