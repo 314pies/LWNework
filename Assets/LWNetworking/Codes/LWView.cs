@@ -6,6 +6,14 @@ using System.Collections.Generic;
 
 namespace LWNetworking
 {
+    public class MethodSortComparer : IComparer
+    {
+        int Compare(object x, object y)
+        {
+            return 1;
+        }
+    }
+
     public class LWView : MonoBehaviour
     {
         void Start()
@@ -19,7 +27,7 @@ namespace LWNetworking
             //}            
         }
 
-        public List<MethodInfo> SearchForRPCMethods()
+        public List<MethodPack> SearchForRPCMethods()
         {
             List<MethodPack> _methodList = new List<MethodPack>();
             object[] AllScript = gameObject.GetComponents<MonoBehaviour>();
@@ -38,7 +46,7 @@ namespace LWNetworking
                                 _types[i] = paraInof[i].GetType();
 
                             MethodPack _newMethodpack = new MethodPack(_instance, info, _types);
-                            //_methodList.Add(info);
+                            _methodList.Add(_newMethodpack);
                             break;
                         }
                     }
