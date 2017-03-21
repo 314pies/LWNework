@@ -112,6 +112,6 @@ namespace LWNetworking
         /// <summary>
         /// Get the method by ProcessKey
         /// </summary>
-        static Dictionary<ProcessKey, TargetMethod> RPCMethodDic;
+        static public Dictionary<ProcessKey, TargetMethod> RPCMethodDic = new Dictionary<ProcessKey, TargetMethod>();
     }
 }
