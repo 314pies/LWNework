@@ -25,8 +25,14 @@ namespace LWNetworking
     /// <summary>
     /// The format for caching target method
     /// </summary>
-    public struct TargetMethod
+    public struct MethodPack
     {
+        public MethodPack(object _instance, MethodInfo _methodInfo,Type[] _types)
+        {
+            instance = _instance;
+            method = _methodInfo;
+            types = _types;
+        }
         /// <summary>
         /// The instance contain this method
         /// </summary>
@@ -103,7 +109,7 @@ namespace LWNetworking
             ProcessKey _key = new ProcessKey(BitConverter.ToInt32(_data, 0), _data[4], _data[5]);
             if (RPCMethodDic.ContainsKey(_key))
             {
-                TargetMethod _targetMethod = RPCMethodDic[_key];
+                MethodPack _targetMethod = RPCMethodDic[_key];
                 _targetMethod.method.Invoke(_targetMethod.instance,new object[1]);
             }
         }
@@ -112,6 +118,6 @@ namespace LWNetworking
         /// <summary>
         /// Get the method by ProcessKey
         /// </summary>
-        static public Dictionary<ProcessKey, TargetMethod> RPCMethodDic = new Dictionary<ProcessKey, TargetMethod>();
+        static public Dictionary<ProcessKey, MethodPack> RPCMethodDic = new Dictionary<ProcessKey, MethodPack>();
     }
 }

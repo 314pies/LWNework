@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Reflection;
 using System.Collections.Generic;
@@ -9,17 +10,18 @@ namespace LWNetworking
     {
         void Start()
         {
-            List<MethodInfo> AllRPCMethod = SearchForRPCMethods();
-            for (int _index=0; _index < AllRPCMethod.Count; _index++)
-            {
-                ProcessKey _newKey = new ProcessKey(LWNetwork.playerID, (byte)ViewID, (byte)_index);
-                //LWNetwork.RPCMethodDic.Add(_newKey, AllRPCMethod[_index]);
-            }            
+            //List<MethodInfo> AllRPCMethod = SearchForRPCMethods();
+            //for (int _index=0; _index < AllRPCMethod.Count; _index++)
+            //{
+            //    ProcessKey _newKey = new ProcessKey(LWNetwork.playerID, (byte)ViewID, (byte)_index);
+            //    MethodPack _newMethodpack = new
+            //    //LWNetwork.RPCMethodDic.Add(_newKey, AllRPCMethod[_index]);
+            //}            
         }
 
         public List<MethodInfo> SearchForRPCMethods()
         {
-            List<MethodInfo> _methodList = new List<MethodInfo>();
+            List<MethodPack> _methodList = new List<MethodPack>();
             object[] AllScript = gameObject.GetComponents<MonoBehaviour>();
             foreach (object _instance in AllScript)
             {
@@ -30,7 +32,13 @@ namespace LWNetworking
                         if (attribute.ToString() == "LWRPC")
                         {
                             //Found a RPC method
-                            _methodList.Add(info);
+                            ParameterInfo[] paraInof = info.GetParameters();
+                            Type[] _types = new Type[paraInof.Length];
+                            for (int i = 0; i < paraInof.Length; i++)
+                                _types[i] = paraInof[i].GetType();
+
+                            MethodPack _newMethodpack = new MethodPack(_instance, info, _types);
+                            //_methodList.Add(info);
                             break;
                         }
                     }
@@ -40,6 +48,9 @@ namespace LWNetworking
             return _methodList;
         }
 
+
+        [SerializeField]
+        private byte Owner;//Which player own this view
         [SerializeField]
         private byte ViewID;
         /// <summary>
