@@ -27,7 +27,7 @@ namespace LWNetworking
     /// </summary>
     public struct MethodPack
     {
-        public MethodPack(object _instance, MethodInfo _methodInfo,Type[] _types)
+        public MethodPack(object _instance, MethodInfo _methodInfo, Type[] _types)
         {
             instance = _instance;
             method = _methodInfo;
@@ -49,7 +49,6 @@ namespace LWNetworking
 
     public class LWNetwork
     {
-
         /// <summary>
         /// Local player networking id
         /// </summary>
@@ -67,8 +66,7 @@ namespace LWNetworking
             byte[] PackedData = new byte[6 + paramsPack.Length];
             System.Buffer.BlockCopy(_playerID, 0, PackedData, 0, _playerID.Length);
             PackedData[4] = _viewID; PackedData[5] = _functionID;
-            System.Buffer.BlockCopy(paramsPack, 0, PackedData, 6, paramsPack.Length);  //6=4+1+1
-                                                                                       // MonoBehaviour.print(PackedData.Length);
+            System.Buffer.BlockCopy(paramsPack, 0, PackedData, 6, paramsPack.Length);  //6=4+1+1                                                                                     // MonoBehaviour.print(PackedData.Length);
         }
         static private byte[] ParamsToByteArray(object[] _params)
         {
@@ -107,17 +105,55 @@ namespace LWNetworking
             Array.Resize(ref FinalArray, Legnth);
             return FinalArray;
         }
+
+        /// <summary>
+        /// Decode recieved byte code
+        /// </summary>
+        /// <param name="_data">Encoded raw data</param>
         static public void OnRecieveByteArray(byte[] _data)
         {
             ProcessKey _key = new ProcessKey(BitConverter.ToInt32(_data, 0), _data[4], _data[5]);
-            if (RPCMethodDic.ContainsKey(_key))
+            if (!RPCMethodDic.ContainsKey(_key))
             {
-                MethodPack _targetMethod = RPCMethodDic[_key];
-                _targetMethod.method.Invoke(_targetMethod.instance,new object[1]);
+                Debug.LogError("Target method is not registered");
+                return;
             }
+            MethodPack _targetMethod = RPCMethodDic[_key];
+            object[] _prameters = new object[_targetMethod.types.Length];
+
+            int StartIndex = 6;//Where to start decoding
+            for (int i = 0; i < _targetMethod.types.Length; i++)
+            {
+                Type _type = _targetMethod.types[i];
+                if (_type == typeof(int))
+                {
+                    _prameters[i] = BitConverter.ToInt32(_data, StartIndex);
+                    StartIndex += 4;
+                }
+                else if (_type == typeof(float))
+                {
+                    _prameters[i] = BitConverter.ToSingle(_data, StartIndex);
+                    StartIndex += 4;
+                }
+                else if (_type == typeof(bool))
+                {
+                    _prameters[i] = BitConverter.ToBoolean(_data, StartIndex);
+                    StartIndex += 1;
+                }
+                else if (_type == typeof(string))
+                {
+                    int Legnth = BitConverter.ToInt32(_data, StartIndex);
+                    StartIndex += 4;
+                    byte[] StringByte = new byte[Legnth];
+                    System.Buffer.BlockCopy(_data, StartIndex, StringByte, 0, Legnth);//From sth start at ? to sth start at with ? Length
+                    _prameters[i] = System.Text.Encoding.Unicode.GetString(StringByte);
+                    StartIndex += Legnth;
+                }
+            }
+            _targetMethod.method.Invoke(_targetMethod.instance, _prameters);
         }
 
-       
+
         /// <summary>
         /// Get the method by ProcessKey
         /// </summary>

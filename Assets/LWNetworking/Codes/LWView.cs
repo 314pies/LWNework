@@ -18,7 +18,8 @@ namespace LWNetworking
     {
         void Start()
         {
-            RegisterRPCMethods();            
+
+            RegisterRPCMethods();
         }
 
         private void RegisterRPCMethods()
@@ -29,6 +30,7 @@ namespace LWNetworking
                 Debug.LogError("RPC methods amount have reach it limits(255)!");
                 return;
             }
+
             for (int _methodId = 0; _methodId < methodPacks.Count; _methodId++)
             {
                 //ProcessKey _newKey = new ProcessKey(Owner,ViewID,(byte)i);
@@ -56,7 +58,7 @@ namespace LWNetworking
                             ParameterInfo[] paraInof = info.GetParameters();
                             Type[] _types = new Type[paraInof.Length];
                             for (int i = 0; i < paraInof.Length; i++)
-                                _types[i] = paraInof[i].GetType();
+                                _types[i] = paraInof[i].ParameterType;
 
                             MethodPack _newMethodpack = new MethodPack(_instance, info, _types);
                             _methodList.Add(_newMethodpack);
