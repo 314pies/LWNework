@@ -58,7 +58,7 @@ namespace LWNetworking
         /// </summary>
         /// <param name="_viewID"></param>
         /// <param name="_functionID"></param>
-        static public void SendRPC(bool _IsReliable,int _owner, byte _viewID, byte _functionID, object[] _params)
+        static public void SendRPC(bool _IsReliable, int _owner, byte _viewID, byte _functionID, object[] _params)
         {
             byte[] _playerID = BitConverter.GetBytes((System.Int32)_owner);
             byte[] paramsPack = ParamsToByteArray(_params);
@@ -98,6 +98,30 @@ namespace LWNetworking
                     _convertedPar = new byte[_newStr.Length + 4];
                     System.Buffer.BlockCopy(_newStrLegnth, 0, _convertedPar, 0, _newStrLegnth.Length);
                     System.Buffer.BlockCopy(_newStr, 0, _convertedPar, 4, _newStr.Length);
+                }
+                else if (_obj.GetType() == typeof(Vector3))
+                {
+                    _convertedPar = new byte[12];
+                    byte[] _x = BitConverter.GetBytes(((Vector3)_obj).x);
+                    byte[] _y = BitConverter.GetBytes(((Vector3)_obj).y);
+                    byte[] _z = BitConverter.GetBytes(((Vector3)_obj).z);
+
+                    System.Buffer.BlockCopy(_x, 0, _convertedPar, 0, 4);
+                    System.Buffer.BlockCopy(_y, 0, _convertedPar, 4, 4);
+                    System.Buffer.BlockCopy(_z, 0, _convertedPar, 8, 4);
+                }
+                else if (_obj.GetType() == typeof(Quaternion))
+                {
+                    _convertedPar = new byte[16];
+                    byte[] _x = BitConverter.GetBytes(((Quaternion)_obj).x);
+                    byte[] _y = BitConverter.GetBytes(((Quaternion)_obj).y);
+                    byte[] _z = BitConverter.GetBytes(((Quaternion)_obj).z);
+                    byte[] _w = BitConverter.GetBytes(((Quaternion)_obj).w);
+
+                    System.Buffer.BlockCopy(_x, 0, _convertedPar, 0, 4);
+                    System.Buffer.BlockCopy(_y, 0, _convertedPar, 4, 4);
+                    System.Buffer.BlockCopy(_z, 0, _convertedPar, 8, 4);
+                    System.Buffer.BlockCopy(_w, 0, _convertedPar, 12, 4);
                 }
                 else
                 {
@@ -152,6 +176,25 @@ namespace LWNetworking
                     System.Buffer.BlockCopy(_data, StartIndex, StringByte, 0, Legnth);//From sth start at ? to sth start at with ? Length
                     _prameters[i] = System.Text.Encoding.Unicode.GetString(StringByte);
                     StartIndex += Legnth;
+                }
+                else if (_type == typeof(Vector3))
+                {
+                    _prameters[i] = new Vector3(
+                        BitConverter.ToSingle(_data, StartIndex),
+                        BitConverter.ToSingle(_data, StartIndex + 4),
+                        BitConverter.ToSingle(_data, StartIndex + 8)
+                    );
+                    StartIndex += 12;
+                }
+                else if (_type == typeof(Quaternion))
+                {
+                    _prameters[i] = new Quaternion(
+                        BitConverter.ToSingle(_data, StartIndex),
+                        BitConverter.ToSingle(_data, StartIndex + 4),
+                        BitConverter.ToSingle(_data, StartIndex + 8),
+                        BitConverter.ToSingle(_data, StartIndex + 12)
+                    );
+                    StartIndex += 16;
                 }
             }
             _targetMethod.method.Invoke(_targetMethod.instance, _prameters);
