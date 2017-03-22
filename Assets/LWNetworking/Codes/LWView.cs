@@ -38,7 +38,9 @@ namespace LWNetworking
                     new ProcessKey(Owner, ViewID, (byte)_methodId),
                     methodPacks[_methodId]
                 );
+                MethodToID.Add(methodPacks[_methodId].method.Name, (byte)_methodId);
             }
+
             Debug.Log(methodPacks.Count + " LWRPC methods have been register.");
         }
 
@@ -77,12 +79,30 @@ namespace LWNetworking
         private int Owner;//Which player own this view
         [SerializeField]
         private byte ViewID;
+
+
         /// <summary>
-        /// Call a remote proccess
+        /// A dictionary to cast method name to it's index
+        /// </summary>
+        private Dictionary<string, byte> MethodToID = new Dictionary<string, byte>();
+
+        /// <summary>
+        /// Call a remote proccess by its index
         /// </summary>
         public void RPC(bool _IsReliable, byte _functionid, params object[] _params)
         {
             LWNetwork.SendRPC(_IsReliable,Owner, ViewID, _functionid, _params);
+        }
+
+        public void RPC(bool _IsReliable, string _methodName, params object[] _params)
+        {
+            if (!MethodToID.ContainsKey(_methodName))
+            {
+                Debug.Log(_methodName+ " method isn't exist.");
+                return;
+            }
+
+            LWNetwork.SendRPC(_IsReliable, Owner, ViewID, MethodToID[_methodName], _params);
         }
     }
 }
