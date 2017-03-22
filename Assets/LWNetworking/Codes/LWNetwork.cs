@@ -41,6 +41,9 @@ namespace LWNetworking
         /// The method
         /// </summary>
         public MethodInfo method;
+        /// <summary>
+        /// The parameters type for this functions
+        /// </summary>
         public Type[] types;
     }
 

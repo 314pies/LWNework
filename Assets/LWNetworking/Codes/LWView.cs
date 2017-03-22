@@ -18,16 +18,29 @@ namespace LWNetworking
     {
         void Start()
         {
-            //List<MethodInfo> AllRPCMethod = SearchForRPCMethods();
-            //for (int _index=0; _index < AllRPCMethod.Count; _index++)
-            //{
-            //    ProcessKey _newKey = new ProcessKey(LWNetwork.playerID, (byte)ViewID, (byte)_index);
-            //    MethodPack _newMethodpack = new
-            //    //LWNetwork.RPCMethodDic.Add(_newKey, AllRPCMethod[_index]);
-            //}            
+            RegisterRPCMethods();            
         }
 
-        public List<MethodPack> SearchForRPCMethods()
+        private void RegisterRPCMethods()
+        {
+            List<MethodPack> methodPacks = SearchForRPCMethods();
+            if (methodPacks.Count >= 255)
+            {
+                Debug.LogError("RPC methods amount have reach it limits(255)!");
+                return;
+            }
+            for (int _methodId = 0; _methodId < methodPacks.Count; _methodId++)
+            {
+                //ProcessKey _newKey = new ProcessKey(Owner,ViewID,(byte)i);
+                LWNetwork.RPCMethodDic.Add(
+                    new ProcessKey(Owner, ViewID, (byte)_methodId),
+                    methodPacks[_methodId]
+                );
+            }
+            Debug.Log(methodPacks.Count + " LWRPC methods have been register.");
+        }
+
+        private List<MethodPack> SearchForRPCMethods()
         {
             List<MethodPack> _methodList = new List<MethodPack>();
             object[] AllScript = gameObject.GetComponents<MonoBehaviour>();
