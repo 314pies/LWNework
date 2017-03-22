@@ -52,21 +52,25 @@ namespace LWNetworking
         /// <summary>
         /// Local player networking id
         /// </summary>
-        static public int playerID = -1;
+        static public int localPlayerId = -1;
         /// <summary>
         /// Encode RPC info to byte array and send it
         /// </summary>
         /// <param name="_viewID"></param>
         /// <param name="_functionID"></param>
-        static public void SendRPC(bool _IsReliable, byte _viewID, byte _functionID, object[] _params)
+        static public void SendRPC(bool _IsReliable,int _owner, byte _viewID, byte _functionID, object[] _params)
         {
-            byte[] _playerID = BitConverter.GetBytes((System.Int32)playerID);
+            byte[] _playerID = BitConverter.GetBytes((System.Int32)_owner);
             byte[] paramsPack = ParamsToByteArray(_params);
 
             byte[] PackedData = new byte[6 + paramsPack.Length];
             System.Buffer.BlockCopy(_playerID, 0, PackedData, 0, _playerID.Length);
             PackedData[4] = _viewID; PackedData[5] = _functionID;
             System.Buffer.BlockCopy(paramsPack, 0, PackedData, 6, paramsPack.Length);  //6=4+1+1                                                                                     // MonoBehaviour.print(PackedData.Length);
+
+
+            MonoBehaviour.print("Byte Leghth: " + PackedData.Length);
+            OnRecieveByteArray(PackedData);
         }
         static private byte[] ParamsToByteArray(object[] _params)
         {

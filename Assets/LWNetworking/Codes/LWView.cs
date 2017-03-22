@@ -16,7 +16,7 @@ namespace LWNetworking
 
     public class LWView : MonoBehaviour
     {
-        void Start()
+        void Awake()
         {
 
             RegisterRPCMethods();
@@ -74,7 +74,7 @@ namespace LWNetworking
 
 
         [SerializeField]
-        private byte Owner;//Which player own this view
+        private int Owner;//Which player own this view
         [SerializeField]
         private byte ViewID;
         /// <summary>
@@ -82,7 +82,7 @@ namespace LWNetworking
         /// </summary>
         public void RPC(bool _IsReliable, byte _functionid, params object[] _params)
         {
-            LWNetwork.SendRPC(_IsReliable, ViewID, _functionid, _params);
+            LWNetwork.SendRPC(_IsReliable,Owner, ViewID, _functionid, _params);
         }
     }
 }
