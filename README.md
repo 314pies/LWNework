@@ -6,7 +6,7 @@ LWNetwork is a light weight high level multiplayer framework that has a very goo
 
 ## Showcase (Local Warfare: Name Uknown)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/rTJNELqfzIw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![](http://img.youtube.com/vi/rTJNELqfzIw/0.jpg)](http://www.youtube.com/watch?v=rTJNELqfzIw "")
 
 ## Architecture
 
