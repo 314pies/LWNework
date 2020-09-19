@@ -29,5 +29,5 @@ For now, LWNetwork support the following platforms:
 * Android
 * iOS
 
-### License (MIT)
+## License (MIT)
 [See this link for more information](https://github.com/314pies/LWNework/blob/master/LICENSE)
