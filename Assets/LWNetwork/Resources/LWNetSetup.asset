@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d8043d114ce314ba1ceac3facde665, type: 3}
+  m_Name: LWNetSetup
+  m_EditorClassIdentifier: 
+  LWLanManager: {fileID: 1252119051714296, guid: e5087f59bfb807e4d9f6d867421073c3,
+    type: 2}
