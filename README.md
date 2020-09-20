@@ -9,7 +9,7 @@ LWNetwork is a lightweight high-level multiplayer framework that has very good i
 
 ## Showcase
 
-### Local Warfare: Name Uknown
+### Local Warfare: Name Unknown
 [![](http://img.youtube.com/vi/rTJNELqfzIw/0.jpg)](http://www.youtube.com/watch?v=rTJNELqfzIw "")
 
 ## Architecture
