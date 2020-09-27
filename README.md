@@ -18,7 +18,7 @@ LWNetwork contains the following main components:
 
 * **Network Objects Manager** to manage network objects.
 * **Network View** to manage network object id, states, and RPC methods.
-* **Syn Variables** to synchronize states on network objects.
+* **Sync Variables** to synchronize states on network objects.
 * **[RPC]** to invoke remote functions across network objects.
 * **Network Events** for handling remote peers connection events 
 
